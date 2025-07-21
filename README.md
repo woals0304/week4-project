@@ -15,9 +15,10 @@ YouTube Data API v3와 React/Vite로 만든 코드·영상 검색 & 재생 웹�
 
 ## 📋 사전 준비
 
-- Node.js (v16 이상 권장) & npm 설치  
-- YouTube Data API v3 사용 가능한 API 키 발급  
-- Git 클라이언트  
+1. Node.js (v16 이상 권장) & npm 설치  
+2. YouTube Data API v3 사용 가능한 API 키 발급  
+   - [Google Cloud Platform 콘솔](https://console.cloud.google.com/apis/library/youtube.googleapis.com)에서 “YouTube Data API v3” 활성화 후 API 키 생성  
+3. Git 클라이언트  
 
 ---
 

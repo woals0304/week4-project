@@ -27,7 +27,7 @@ export interface AnalyzeResult {
 }
 
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * 유튜브에서 영상 리스트 검색

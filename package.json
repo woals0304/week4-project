@@ -1,0 +1,10 @@
+@@ .. @@
+   "scripts": {
+     "dev": "vite",
++    "dev:full": "concurrently \"npm run dev\" \"cd backend && python main.py\"",
+     "build": "vite build",
+@@ .. @@
+   "dependencies": {
+     "@types/node": "^24.0.15",
++    "concurrently": "^8.2.2",
+     "lucide-react": "^0.344.0",

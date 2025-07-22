@@ -6,7 +6,7 @@ import SearchBar from '../components/SearchBar';
 import YouTubePlayer from '../components/YouTubePlayer';
 import ChordChart from '../components/ChordChart';
 import ChordProgression from '../components/ChordProgression';
-import { getSongDetail } from '../utils/api';
+import { getSongDetail, analyzeSong } from '../utils/api';
 import { SongDetail } from '../types/song';
 
 const SongDetailPage: React.FC = () => {
@@ -28,7 +28,8 @@ const SongDetailPage: React.FC = () => {
       setLoading(true);
       try {
         const detail = await getSongDetail(id);
-        setSongDetail(detail);
+        const analysis = await analyzeSong(id);
+        setSongDetail({ ...detail, ...analysis } as SongDetail);
       } catch (err) {
         console.error('Error loading song detail:', err);
         setError('곡 정보를 불러오는 중 오류가 발생했습니다.');

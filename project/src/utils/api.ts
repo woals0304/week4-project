@@ -17,7 +17,17 @@ export interface SongDetail {
   // 필요에 따라 contentDetails 등 추가 정의 가능
 }
 
+/** 분석 결과 DTO */
+export interface AnalyzeResult {
+  bpm: number;
+  signature: string;
+  key: string;
+  chords: { chord: string; timestamp: number; duration: number }[];
+  chordCharts: { chord: string; frets: number[]; fingers: number[] }[];
+}
+
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 /**
  * 유튜브에서 영상 리스트 검색
@@ -84,4 +94,24 @@ export const getSongDetail = async (
     thumbnailUrl: vid.snippet.thumbnails.high.url,
     // contentDetails 등 추가 정보가 필요하면 여기에 할당
   };
+};
+
+/**
+ * 백엔드 서버에서 곡 분석 결과 조회
+ * @param videoId 유튜브 동영상 ID
+ */
+export const analyzeSong = async (
+  videoId: string
+): Promise<AnalyzeResult> => {
+  const url = `${BACKEND_URL}/analyze`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ videoId })
+  });
+  if (!res.ok) throw new Error(`Analyze Error: ${res.status}`);
+  const data = await res.json();
+  return data as AnalyzeResult;
 };

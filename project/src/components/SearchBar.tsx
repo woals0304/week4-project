@@ -1,3 +1,5 @@
+// src/components/SearchBar.tsx
+
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 
@@ -34,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-6 py-4 text-gray-800 bg-white rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-14"
+        className="w-full px-6 py-4 text-gray-800 bg-white rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 pr-14"
       />
       <button
         type="button"

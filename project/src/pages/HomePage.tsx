@@ -10,10 +10,9 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
       <div className="text-center mb-12">
-        <h1 className="text-6xl font-bold text-white mb-4">AutoChord</h1>
-        <p className="text-gray-400 text-lg">(유튜브 영상에서 코드 추출)</p>
+        <h1 className="text-6xl font-bold text-black mb-4">AutoChord</h1>
       </div>
       
       <div className="w-full max-w-2xl mb-8">
@@ -24,7 +23,7 @@ const HomePage: React.FC = () => {
         />
       </div>
       
-      <div className="w-full max-w-2xl h-px bg-gray-700"></div>
+      <div className="w-full max-w-2xl h-px bg-gray-300"></div>
     </div>
   );
 };

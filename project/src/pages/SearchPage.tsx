@@ -1,5 +1,3 @@
-// src/pages/SearchPage.tsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
@@ -36,7 +34,6 @@ const SearchPage: React.FC = () => {
     []
   );
 
-  // 초기 검색 또는 쿼리 변경 시
   useEffect(() => {
     if (query) {
       loadSongs(query);
@@ -61,7 +58,6 @@ const SearchPage: React.FC = () => {
     }
   };
 
-  // Infinite scroll
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -76,9 +72,9 @@ const SearchPage: React.FC = () => {
   }, [loading, hasMore, nextPageToken, query, loadSongs]);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       {/* Fixed search bar */}
-      <div className="sticky top-0 bg-black z-50 border-b border-gray-800 p-4">
+      <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
         <div className="max-w-4xl mx-auto">
           <SearchBar onSearch={handleSearch} placeholder="paste youtube link or search song" />
         </div>
@@ -87,12 +83,12 @@ const SearchPage: React.FC = () => {
       {/* Search results */}
       <div className="max-w-4xl mx-auto p-4">
         {loading && songs.length === 0 ? (
-          <div className="text-center text-gray-400 py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <div className="text-center text-gray-600 py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
             검색 중...
           </div>
         ) : songs.length === 0 && query ? (
-          <div className="text-center text-gray-400 py-12">
+          <div className="text-center text-gray-600 py-12">
             검색 결과가 없습니다.
           </div>
         ) : (
@@ -108,14 +104,14 @@ const SearchPage: React.FC = () => {
             </div>
 
             {loading && songs.length > 0 && (
-              <div className="text-center text-gray-400 py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
+              <div className="text-center text-gray-600 py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto mb-2"></div>
                 더 많은 결과를 불러오는 중...
               </div>
             )}
 
             {!hasMore && songs.length > 0 && (
-              <div className="text-center text-gray-500 py-8">
+              <div className="text-center text-gray-400 py-8">
                 모든 검색 결과를 확인했습니다.
               </div>
             )}

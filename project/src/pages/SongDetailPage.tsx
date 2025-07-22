@@ -23,6 +23,7 @@ const SongDetailPage: React.FC = () => {
       setLoading(false);
       return;
     }
+
     const loadSongDetail = async (id: string) => {
       setLoading(true);
       try {
@@ -35,6 +36,7 @@ const SongDetailPage: React.FC = () => {
         setLoading(false);
       }
     };
+
     loadSongDetail(videoId);
   }, [videoId]);
 
@@ -44,9 +46,9 @@ const SongDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center text-gray-400">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center text-gray-600">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
           곡 정보를 불러오는 중...
         </div>
       </div>
@@ -55,11 +57,11 @@ const SongDetailPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center text-red-400">
-          {error}
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center text-red-500">
+          <p>{error}</p>
           <button
-            className="mt-4 px-4 py-2 bg-gray-700 text-white rounded"
+            className="mt-4 px-4 py-2 bg-gray-200 text-black rounded"
             onClick={() => navigate(-1)}
           >
             뒤로 가기
@@ -69,10 +71,10 @@ const SongDetailPage: React.FC = () => {
     );
   }
 
-  if (!songDetail) {
+  if (!songDetail || !videoId) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center text-gray-400">
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center text-gray-600">
           곡 정보를 찾을 수 없습니다.
         </div>
       </div>
@@ -80,9 +82,9 @@ const SongDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       {/* Fixed search bar */}
-      <div className="sticky top-0 bg-black z-50 border-b border-gray-800 p-4">
+      <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
         <div className="max-w-7xl mx-auto">
           <SearchBar
             onSearch={handleSearch}
@@ -95,16 +97,18 @@ const SongDetailPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Video player */}
           <div className="lg:col-span-2">
-            <div className="bg-gray-900 rounded-lg overflow-hidden">
+            <div className="bg-gray-100 rounded-lg overflow-hidden">
               <YouTubePlayer
                 videoId={videoId}
                 className="w-full aspect-video"
+                onTimeUpdate={setCurrentTime} // YouTubePlayer가 이 prop을 지원한다고 가정
               />
             </div>
+
             {/* Chord progression */}
             <div className="mt-6">
               <ChordProgression
-                chords={songDetail.chords || []}
+                chords={songDetail.chords}
                 currentTime={currentTime}
               />
             </div>
@@ -112,27 +116,27 @@ const SongDetailPage: React.FC = () => {
 
           {/* Song info sidebar */}
           <div className="space-y-6">
-            <div className="bg-gray-900 rounded-lg p-6">
-              <h2 className="text-white text-xl font-bold mb-4">곡 정보</h2>
-              <div className="space-y-3 text-gray-300">
+            <div className="bg-gray-100 rounded-lg p-6">
+              <h2 className="text-black text-xl font-bold mb-4">곡 정보</h2>
+              <div className="space-y-3 text-gray-700">
                 <div>
-                  <span className="text-gray-400">제목:</span>
+                  <span className="text-gray-500">제목:</span>
                   <p className="font-semibold">{songDetail.title}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">아티스트:</span>
+                  <span className="text-gray-500">아티스트:</span>
                   <p className="font-semibold">{songDetail.channelTitle}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">Song BPM:</span>
+                  <span className="text-gray-500">Song BPM:</span>
                   <p className="font-semibold">{songDetail.bpm}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">Song Signature:</span>
+                  <span className="text-gray-500">Song Signature:</span>
                   <p className="font-semibold">{songDetail.signature}</p>
                 </div>
                 <div>
-                  <span className="text-gray-400">조성:</span>
+                  <span className="text-gray-500">조성:</span>
                   <p className="font-semibold">({songDetail.key})</p>
                 </div>
               </div>
@@ -142,14 +146,14 @@ const SongDetailPage: React.FC = () => {
 
         {/* Chord charts */}
         <div className="mt-8">
-          <h2 className="text-white text-2xl font-bold mb-6">코드 차트</h2>
+          <h2 className="text-black text-2xl font-bold mb-6">코드 차트</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-            {Array.isArray(songDetail.chordCharts) ? (
+            {Array.isArray(songDetail.chordCharts) && songDetail.chordCharts.length > 0 ? (
               songDetail.chordCharts.map((chord, index) => (
                 <ChordChart key={index} chord={chord} />
               ))
             ) : (
-              <p className="text-gray-400">코드 차트 정보가 없습니다.</p>
+              <p className="text-gray-500">코드 차트 정보가 없습니다.</p>
             )}
           </div>
         </div>

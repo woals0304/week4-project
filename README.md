@@ -32,15 +32,33 @@ YouTube Data API v3와 React/Vite로 만든 코드·영상 검색 & 재생 웹�
 2. 환경 변수 예시 파일 복사
     ```bash
     cp .env.example .env.local
+    ```
 
-3. .env.local 파일 열어 API 키 입력
+3. .env.local 파일 열어 API 키와 백엔드 URL 설정
     VITE_YOUTUBE_API_KEY=YOUR_YOUTUBE_API_KEY_HERE
+    VITE_BACKEND_URL=http://localhost:5001
     YOUR_YOUTUBE_API_KEY_HERE -> API Key
 
-4. 의존성 설치 & 개발 서버 실행
+4. 의존성 설치
     ```bash
     npm install
+    ```
+
+5. 백엔드 서버 실행
+    ```bash
+    cd backend
+    pip install -r requirements.txt
+    python main.py
+    ```
+
+6. 프론트엔드 개발 서버 실행
+    ```bash
+    cd project
+    npm install
     npm run dev
+    ```
+
+   두 서버를 동시에 실행하려면 루트에서 `npm run dev:full` 을 사용할 수 있습니다.
 
 ---
 

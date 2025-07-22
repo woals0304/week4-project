@@ -76,7 +76,7 @@ const SearchPage: React.FC = () => {
       {/* Fixed search bar */}
       <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
         <div className="max-w-4xl mx-auto">
-          <SearchBar onSearch={handleSearch} placeholder="paste youtube link or search song" />
+          <SearchBar onSearch={handleSearch} placeholder="어떤 노래를 연주할까요?" />
         </div>
       </div>
 

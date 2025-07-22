@@ -88,7 +88,7 @@ const SongDetailPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <SearchBar
             onSearch={handleSearch}
-            placeholder="paste youtube link or search song"
+            placeholder="어떤 노래를 연주할까요?"
           />
         </div>
       </div>

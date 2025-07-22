@@ -31,41 +31,94 @@ const SongDetailPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchSongDetail = async () => {
-      if (!videoId) return;
-      
+    if (!videoId) {
+      setError('잘못된 요청입니다.');
+      setLoading(false);
+      return;
+    }
+
+    const loadSongDetail = async (id: string) => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const data = await getSongDetail(videoId);
-        setSongDetail(data);
+        const detail = await getSongDetail(id);
+        setSongDetail(detail);
       } catch (err) {
-        setError('곡 정보를 불러오는데 실패했습니다.');
-        console.error('Error fetching song detail:', err);
+        console.error('Error loading song detail:', err);
+        setError('곡 정보를 불러오는 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSongDetail();
+    loadSongDetail(videoId);
   }, [videoId]);
+
+  const handleSearch = (query: string) => {
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
-        <SearchBar onSearch={() => {}} />
-        <div className="flex justify-center items-center h-64">
-          <div className="text-gray-500">로딩 중...</div>
+        <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
+          <div className="max-w-7xl mx-auto">
+            <SearchBar
+              onSearch={handleSearch}
+              placeholder="paste youtube link or search song"
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center text-gray-600">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
+            곡 정보를 불러오는 중...
+          </div>
         </div>
       </div>
     );
   }
 
-  if (error || !songDetail) {
+  if (error) {
     return (
       <div className="min-h-screen bg-white">
-        <SearchBar onSearch={() => {}} />
-        <div className="flex justify-center items-center h-64">
-          <div className="text-red-500">{error || '곡 정보를 찾을 수 없습니다.'}</div>
+        <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
+          <div className="max-w-7xl mx-auto">
+            <SearchBar
+              onSearch={handleSearch}
+              placeholder="paste youtube link or search song"
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center text-red-500">
+            <p>{error}</p>
+            <button
+              className="mt-4 px-4 py-2 bg-gray-200 text-black rounded"
+              onClick={() => navigate(-1)}
+            >
+              뒤로 가기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!songDetail || !videoId) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
+          <div className="max-w-7xl mx-auto">
+            <SearchBar
+              onSearch={handleSearch}
+              placeholder="paste youtube link or search song"
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center text-gray-600">
+            곡 정보를 찾을 수 없습니다.
+          </div>
         </div>
       </div>
     );
@@ -73,8 +126,16 @@ const SongDetailPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <SearchBar onSearch={() => {}} />
-      
+      {/* Fixed search bar */}
+      <div className="sticky top-0 bg-white z-50 border-b border-gray-200 p-4">
+        <div className="max-w-7xl mx-auto">
+          <SearchBar
+            onSearch={handleSearch}
+            placeholder="paste youtube link or search song"
+          />
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto p-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Video player */}
@@ -82,24 +143,45 @@ const SongDetailPage: React.FC = () => {
             <div className="bg-gray-100 rounded-lg overflow-hidden">
               <YouTubePlayer
                 videoId={videoId}
-                className="w-full h-[500px]"
+                className="w-full aspect-video"
               />
             </div>
-            
-            {/* 여백 */}
-            <div className="h-8" />
+
+            {/* 여백 (기존 Chord progression 자리) */}
+            <div className="mt-6 h-24"></div>
           </div>
 
           {/* Song info sidebar */}
-          <div>
-            <div className="bg-gray-100 rounded-lg p-6 h-[500px] flex flex-col justify-center">
-              <h3 className="text-black font-semibold text-lg mb-1">{songDetail.title}</h3>
-              <p className="text-gray-600 text-sm">{songDetail.channelTitle}</p>
+          <div className="space-y-6">
+            <div className="bg-gray-100 rounded-lg p-6">
+              <h2 className="text-black text-xl font-bold mb-4">곡 정보</h2>
+              <div className="space-y-3 text-gray-700">
+                <div>
+                  <span className="text-gray-500">제목:</span>
+                  <p className="font-semibold">{songDetail.title}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500">아티스트:</span>
+                  <p className="font-semibold">{songDetail.channelTitle}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500">Song BPM:</span>
+                  <p className="font-semibold">{songDetail.bpm}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500">Song Signature:</span>
+                  <p className="font-semibold">{songDetail.signature}</p>
+                </div>
+                <div>
+                  <span className="text-gray-500">조성:</span>
+                  <p className="font-semibold">({songDetail.key})</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Chordify 임베드 */}
+        {/* Chordify 임베드 (기존 코드 차트 자리) */}
         <div className="mt-8">
           <iframe 
             frameBorder="0" 
